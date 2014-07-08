@@ -8,12 +8,14 @@ import sqlite3
 import time
 from pprint import pprint
 
+# found pattern after line 72
 def getVal(htmltext, pos=0):
 	if pos == 0:
 		return soup.find("td", text=re.compile(htmltext)).next_sibling.next_sibling.string
 	else:
 		return soup.find(text=htmltext).find_previous("tr").contents[pos].string.strip()
 
+# line 125 sqlite population
 def popDB(sqllist, tname):
 	sql = '''INSERT INTO ''' + tname + ''' VALUES (''' + \
 			"?," * (len(sqllist) - 1) + '''?)'''
@@ -37,23 +39,25 @@ for line in fo:
 		print "skipped"
 		continue
 
-	# parse objects that will be input into sql DB
+	# parse objects that will be input into sql DB (everything on the page with a numerical value)
 	tagline = soup.find("h2", class_="tagline").string
 	category = soup.find("p", class_="crumbs").string
 	chaNam = soup.find("h1", class_="charityname").string
 
+	# more work to find EXPENSES
 	EXPENSES_tr = soup.find("a", class_="glossary", text="EXPENSES").find_previous("tr")
 	proExp = EXPENSES_tr.find_next("tr").contents[3].string
 	admExp = EXPENSES_tr.find_next("tr").find_next("tr").contents[3].string
 	funExp = EXPENSES_tr.find_next("tr").find_next("tr").find_next("tr").contents[3].string
 
+	# contributions, gifts, and grants in contribution box (regex for '&' in gifts & grants) (two next siblings to get to next line, one does not work)
 	conGifGran = soup.find("td", text=re.compile("Contributions,")).next_sibling.next_sibling.string
 
 	totCon = soup.find(text="Total Contributions").find_previous("tr").contents[3].string
 
-	#time.sleep(1)
 	#mission = soup.find("h2", text="Mission").find_next_sibling("p").string
 	mmission = soup.find("a", text="Mission").find_previous("h2").find_next("p").stripped_strings
+	#join python list with spaces
 	mission = " ".join(mmission)
 
 	othRev = soup.find("a", class_="glossary", text="Other Revenue").find_previous("tr").contents[3].string
@@ -98,6 +102,7 @@ for line in fo:
 	relOrg = getVal("Related Organizations")
 
 
+	# still had to pass primary key so: None
 	finPerMetricst = [None, proExp, admExp, funExp, 
 						priRevGro, proExpGro, worCapRat,
 						funEff ]
@@ -127,7 +132,7 @@ for line in fo:
 	popDB(overallt, "overall")
 	conn.close()
 
-	#time.sleep(1)
+# reset primary key values	
 """
 delete from finPerMetrics;    
 delete from sqlite_sequence where name='finPerMetrics';
