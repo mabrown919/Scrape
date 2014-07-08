@@ -34,6 +34,7 @@ for link in soup.find(id="maincontent2").find_all('a', recursive=False):
 for link in urldirectory:
 	page = urllib.urlopen(link).read()
 	soup = BeautifulSoup(page)
+	#split the end link on the end from "cn" and add .txt
 	fh = io.open(link.split("=")[-1]+".txt", 'w', encoding="utf-8")
 	for l in soup.find(id="maincontent2").find_all('a', recursive=False):
 		#print l
