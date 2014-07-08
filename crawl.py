@@ -24,6 +24,7 @@ for link in soup.find(id="maincontent2").p.find_all('a'):
 # urldf.close()
 
 #a-z directory list
+#not using urllist
 urllist = []
 for link in soup.find(id="maincontent2").find_all('a', recursive=False):
 	urllist.append(link.get('href'))
