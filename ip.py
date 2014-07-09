@@ -28,13 +28,17 @@ import urllib
 import os
 
 baseURL="http://www.intelligentphilanthropy.com"
+# links to charities /overview
 overviewLinks = []
+# /overview/2670032
 overviewSubStr = []
+#using substring
 overviewPDFlinks = []
+#pdf download
 pdfLinks = []
 downDir = "/Users/apple/Desktop/startup/pi"
 
-#login
+#login to keep up with the session
 br = mechanize.Browser()
 uname = "kemar.england@gmail.com"
 pword = "8201hrh4thr734rb1no"
@@ -63,6 +67,7 @@ for x in range(0,numResults):
 	pdfLinks = []
 
 	x+=1
+	#open up the next list of search results
 	response = br.open("http://www.intelligentphilanthropy.com/search-results?original_url%5B%5D=search-results&page="+str(x)+"&sort=%60nodes%60.name+ASC")
 	html = response.read()
 	soup = BeautifulSoup(html)
@@ -75,6 +80,7 @@ for x in range(0,numResults):
 			overviewLinks.append(baseURL+link.get('href'))
 	#print overviewLinks				http://www.intelligentphilanthropy.com/overview/268074-a-m-partnership
 	#overviewPDFlinks = []
+	#create pdf link from download 
 	for x in range(0,len(overviewSubStr)):
 		prePDFlinks.append(baseURL+"/overview-pdf/"+overviewSubStr[x].split("/")[2])
 	#print overviewPDFlinks				http://www.intelligentphilanthropy.com/overview-pdf/968230-arab-world-media
