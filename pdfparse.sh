@@ -2,6 +2,7 @@
 #default IFS assignment: IFS=$' \t\n'
 fn=$1
 echo "Processing $1..."
+#pdftk - processing pdf
 dump1=`pdftk "$1" dump_data_fields | sed 's,---,''\|'',g'`
 oldIFS=$IFS
 key=
