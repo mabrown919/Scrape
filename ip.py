@@ -98,6 +98,7 @@ for x in range(0,numResults):
 		except TypeError:
 			pdfLinks.append("NO PDF AVAILABLE")
 	dlLinks += pdfLinks
+	
 #save dl links for later
 #outfile
 f = open(downDir+"/pdflinks.txt", "w")
